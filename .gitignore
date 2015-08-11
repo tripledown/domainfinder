@@ -1,3 +1,6 @@
 domainDB.db
 domainmodels.pyc
 venv/
+.idea/
+scrapfile
+query.py

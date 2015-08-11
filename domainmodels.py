@@ -1,5 +1,3 @@
-import os
-import sys
 from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
@@ -17,6 +15,7 @@ class Domains(Base):
     city = Column(String)
     updated_date = Column(Integer)
     expiration_date = Column(Integer)
+    registrar = Column(String)
 
 
 # Create an engine that stores data in the local directory's
@@ -26,3 +25,5 @@ engine = create_engine('sqlite:///domainDB.db')
 # Create all tables in the engine. This is equivalent to "Create Table"
 # statements in raw SQL.
 Base.metadata.create_all(engine)
+
+# Need to add default data (just one row for now)

@@ -1,5 +1,4 @@
 import whois
-import sqlalchemy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
@@ -23,42 +22,35 @@ session = DBSession()
 
 def userinput():
     userin = raw_input("Enter domain: ")
-    userin = userin.replace('www.','')
+    userin = userin.replace('www.', '')
     whoisfnc(userin)
 
 def whoisfnc(domainsel):
     dict = whois.whois(domainsel)
-    domain = (domainsel)
+    domainvar = (domainsel)
     country = (dict['country'])
     city = (dict['city'])
     updated_date = (dict['updated_date'])
     expiration_date = (dict['expiration_date'])
     registrar = (dict['registrar'])
 
-    # put it in the database
-    insertdb = Domains(domain=domain,country=country,city=city,updated_date=updated_date,expiration_date=expiration_date)
-    session.add(insertdb)
-    session.commit()
-'''
-    print "Country:\t {country}".format(**dict)
-    print "City:\t\t {city}".format(**dict)
-    print "Updated last:\t {updated_date}".format(**dict)
-    print "Expiration date:\t {expiration_date}".format(**dict)
-    print "Registrar:\t {registrar}".format(**dict)
+    # Build an array of entries
+    # ISSUE = its using the for loop for the amount of times it runs over the same domainentry / existing
+    exists = session.query(Domains).filter_by(domain=domainvar)
+    exists_count = exists.count()
+    if exists_count > 0:
+        print "Domain " + domainvar + " already exists"
+    else:
+        print "Adding " + domainvar
+        insertdb = Domains(domain=domainvar,
+                               country=country,
+                               city=city,
+                               updated_date=updated_date,
+                               expiration_date=expiration_date,
+                               registrar=registrar)
+        session.add(insertdb)
+        session.commit()
+        print "Made entry for: " + domainvar
 
-    # get nameservers
-    ns_list = dict['name_servers']
-    for ns in ns_list:
-        print "Name Server:\t %s" % ns
-
-    # get emails
-    email_list = dict['emails']
-    for email in email_list:
-        print "Contact Email:\t %s" % email
-'''
 if __name__ == '__main__':
     userinput()
-
-# notes
-
-# cat /usr/share/dict/words > words.txt
