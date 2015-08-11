@@ -20,6 +20,9 @@ DBSession = sessionmaker(bind=engine)
 # session.rollback()
 session = DBSession()
 
+def donothing():
+    pass
+
 def userinput():
     userin = raw_input("Enter domain: ")
     userin = userin.replace('www.', '')
@@ -33,12 +36,15 @@ def whoisfnc(domainsel):
     updated_date = (dict['updated_date'])
     expiration_date = (dict['expiration_date'])
     registrar = (dict['registrar'])
-
-    # Build an array of entries
-    # ISSUE = its using the for loop for the amount of times it runs over the same domainentry / existing
     exists = session.query(Domains).filter_by(domain=domainvar)
     exists_count = exists.count()
-    if exists_count > 0:
+    if dict.updated_date is None:
+        print "Not a registered domain"
+        donothing()
+    # Build an array of entries
+    # ISSUE = its using the for loop for the amount of times it runs over the same domainentry / existing
+
+    elif exists_count > 0:
         print "Domain " + domainvar + " already exists"
     else:
         print "Adding " + domainvar
@@ -54,3 +60,4 @@ def whoisfnc(domainsel):
 
 if __name__ == '__main__':
     userinput()
+
