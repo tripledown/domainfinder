@@ -29,16 +29,16 @@ def userinput():
     whoisfnc(userin)
 
 def whoisfnc(domainsel):
-    dict = whois.whois(domainsel)
+    domaindict = whois.whois(domainsel)
     domainvar = (domainsel)
-    country = (dict['country'])
-    city = (dict['city'])
-    updated_date = (dict['updated_date'])
-    expiration_date = (dict['expiration_date'])
-    registrar = (dict['registrar'])
+    country = (domaindict['country'])
+    city = (domaindict['city'])
+    updated_date = (domaindict['updated_date'])
+    expiration_date = (domaindict['expiration_date'])
+    registrar = (domaindict['registrar'])
     exists = session.query(Domains).filter_by(domain=domainvar)
     exists_count = exists.count()
-    if dict.updated_date is None:
+    if domaindict.updated_date is None:
         print "Not a registered domain"
         donothing()
     # Build an array of entries
