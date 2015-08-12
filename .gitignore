@@ -4,3 +4,4 @@ venv/
 .idea/
 scrapfile
 query.py
+words.txt
