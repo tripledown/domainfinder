@@ -20,12 +20,13 @@ def main_menu():
     print (30 * '-')
     print ("   M A I N - M E N U")
     print (30 * '-')
-    print ("1. Update Database")
+    print ("1. Scan dictionary file to DB")
     print ("2. Dump CSV")
-    print ("3. Perform Look Up")
+    print ("3. Perform Look Up (include TLD!")
     print (30 * '-')
 
-    selection = int(raw_input('Enter your choice [1-3] : '))
+    # selection = int(raw_input('Enter your choice [1-3] : '))
+    selection = raw_input("Enter your choice [1-3] : ")
     while selection not in ("1", "2", "3"):
         print "Please choose a valid option"
         selection = raw_input()
