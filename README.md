@@ -17,6 +17,7 @@ Current data captured is domain, country, expiry, updated, and registar (more ca
 Best to use a virtualenv
 
     pip install whois
+    pip install SQLAlchemy
     
 Configure options (config.ini)
 
