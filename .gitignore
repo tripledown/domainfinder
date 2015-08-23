@@ -5,3 +5,5 @@ venv/
 scrapfile
 query.py
 words.txt
+expiring.csv
+TODO
