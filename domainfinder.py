@@ -13,7 +13,7 @@ from domainmodels import Domains, Base
 # Database bits (create_engine needs porting into config.ini)
 
 engine = create_engine('sqlite:///domainDB.db')
-engine.connect().connection.connection.text_factory = str
+engine.connect().connection.text_factory = str
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()

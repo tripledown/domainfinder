@@ -21,7 +21,7 @@ class Domains(Base):
 # Create an engine that stores data in the local directory's
 # sqlalchemy_example.db file.
 engine = create_engine('sqlite:///domainDB.db')
-engine.engine.connect().connection.connection.text_factory = str
+engine.connect().connection.text_factory = str
 
 # Create all tables in the engine. This is equivalent to "Create Table"
 # statements in raw SQL.
