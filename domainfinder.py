@@ -3,6 +3,7 @@ import time
 import os.path
 import sys
 import csv
+import codecs
 from ConfigParser import SafeConfigParser
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -12,9 +13,11 @@ from domainmodels import Domains, Base
 # Database bits (create_engine needs porting into config.ini)
 
 engine = create_engine('sqlite:///domainDB.db')
+engine.engine.connect().connection.connection.text_factory = str
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
+
 
 def main_menu():
     print (30 * '-')
@@ -53,7 +56,8 @@ def configure_app():
 
 def iterate_domains(dictfile, tld):
     tld = tld.split(',')
-    with open(dictfile, 'rb') as f:
+    with codecs.open(dictfile, 'rb', encoding='utf-8') as f:
+    # with open(dictfile, 'rb', encoding='utf8') as f:
         for line in f:
             line = line.lower()
             line = line.rstrip()
@@ -64,15 +68,16 @@ def iterate_domains(dictfile, tld):
                 else:
                     fullurl=line+tlds
                     time.sleep(0.5)
-                    print fullurl
+                    #print fullurl
                     whoisfnc(fullurl)
 
 
 def whoisfnc(domainselected):
-    print 'Checking: '+ domainselected + '.....\n'
     currentdomain = whois.whois(domainselected)
     country = (currentdomain['country'])
     city = (currentdomain['city'])
+    letsfind = type(city)
+    print letsfind
     updated_date = (currentdomain['updated_date'])
     expiration_date = (currentdomain['expiration_date'])
     registrar = (currentdomain['registrar'])
@@ -94,8 +99,7 @@ def whoisfnc(domainselected):
         session.commit()
 
     elif exists_count > 0:
-        print "Domain " + domainselected + " already exists"
-        print "\n"
+        print "Domain " + domainselected + " already exists" + "\n"
     else:
         insertdb = Domains(domain=domainselected,
                            country=country,
@@ -105,7 +109,7 @@ def whoisfnc(domainselected):
                            registrar=registrar)
         session.add(insertdb)
         session.commit()
-        print "Made entry for: " + domainselected + "\n"
+        print "No whois found for : " + domainselected + "\n"
 
 def userinput():
     user_input = raw_input("Enter domain: ")
